@@ -39,7 +39,7 @@ export function LoginView() {
           </div>
           <div>
             <div className="login-brand-name">RIBEIRO</div>
-            <div className="login-brand-sub">Obras & Vialidad</div>
+            <div className="login-brand-sub">Locaciones</div>
           </div>
         </div>
 

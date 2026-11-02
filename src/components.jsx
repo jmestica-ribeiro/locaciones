@@ -78,7 +78,7 @@ export function Sidebar({ compact, outbox, isOnline, lastSync, onToggle, isAdmin
     <aside className={clsx("sidebar", compact && "compact")}>
       <button className="brand" onClick={() => navigate("/proyectos")} style={{ background: "none", border: "none", cursor: "pointer", textAlign: "left", color: "inherit", font: "inherit" }}>
         <div className="brand-logo"><Logo /></div>
-        <div className="brand-name">RIBEIRO<small>OBRAS &amp; VIALIDAD</small></div>
+        <div className="brand-name">RIBEIRO<small>LOCACIONES</small></div>
       </button>
       <button className="sb-toggle" onClick={onToggle} title="Contraer / expandir">
         <Icon name="chevL" size={15} />

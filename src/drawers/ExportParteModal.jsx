@@ -136,7 +136,7 @@ async function generatePDF(parte, project, inspector, firmaRibeiro, representant
   setFont(8, "normal", [180, 170, 150]);
   doc.text(`${project.code}  ·  ${project.location}${project.client ? "  ·  " + project.client : ""}`, textX, 20);
   setFont(8, "bold", [180, 170, 150]);
-  doc.text("RIBEIRO  OBRAS & VIALIDAD", textX, 27);
+  doc.text("RIBEIRO  LOCACIONES", textX, 27);
 
   setFont(9, "bold", colors.white);
   doc.text(parteLabel, W - margin, 13, { align: "right" });
@@ -316,7 +316,7 @@ async function generatePDF(parte, project, inspector, firmaRibeiro, representant
   doc.rect(xRib, y, colFirma, 46, "S");
 
   setFont(7, "bold", [231, 177, 58]);
-  doc.text("RIBEIRO  OBRAS & VIALIDAD", xRib + colFirma / 2, y + 8, { align: "center" });
+  doc.text("RIBEIRO  LOCACIONES", xRib + colFirma / 2, y + 8, { align: "center" });
   if (representante) {
     setFont(7, "normal", [200, 190, 160]);
     doc.text(representante, xRib + colFirma / 2, y + 14, { align: "center" });

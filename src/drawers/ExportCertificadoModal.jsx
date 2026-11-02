@@ -103,7 +103,7 @@ async function generateCertificado({ project, avances, desde, hasta, inspector, 
   sf(8, "normal", [180, 170, 150]);
   doc.text(`${project.code}  ·  ${project.location}${project.client ? "  ·  " + project.client : ""}`, tx, 21);
   sf(8, "bold", [180, 170, 150]);
-  doc.text("RIBEIRO  OBRAS & VIALIDAD", tx, 28);
+  doc.text("RIBEIRO  LOCACIONES", tx, 28);
 
   // Período + N°
   sf(8, "bold", C.white);
@@ -317,7 +317,7 @@ async function generateCertificado({ project, avances, desde, hasta, inspector, 
   doc.setDrawColor(...C.gold); doc.setLineWidth(0.5);
   doc.rect(xR, y, colF, 46, "S");
   sf(7, "bold", [231, 177, 58]);
-  doc.text("RIBEIRO  OBRAS & VIALIDAD", xR + colF / 2, y + 7, { align: "center" });
+  doc.text("RIBEIRO  LOCACIONES", xR + colF / 2, y + 7, { align: "center" });
   if (representante) { sf(7, "normal", [200, 190, 160]); doc.text(representante, xR + colF / 2, y + 13, { align: "center" }); }
   if (firmaRibeiro) {
     try { doc.addImage(firmaRibeiro, "PNG", xR + 4, y + 15, colF - 8, 20); } catch {}
