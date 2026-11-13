@@ -8,9 +8,9 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       manifest: {
-        name: 'RIBEIRO — Partes Diarios',
-        short_name: 'Partes Diarios',
-        description: 'Gestión de partes diarios de obra',
+        name: 'RIBEIRO — Locaciones',
+        short_name: 'Locaciones',
+        description: 'Gestión de locaciones y obras',
         theme_color: '#1a1a2e',
         background_color: '#1a1a2e',
         display: 'standalone',

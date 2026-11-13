@@ -3,7 +3,7 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
 const WEBHOOK_SECRET = Deno.env.get("WEBHOOK_SECRET");
 const FROM_EMAIL = Deno.env.get("NOTIF_FROM_EMAIL") || "onboarding@resend.dev";
-const FROM_NAME = Deno.env.get("NOTIF_FROM_NAME") || "PARTES DIARIOS - RIBEIRO";
+const FROM_NAME = Deno.env.get("NOTIF_FROM_NAME") || "RIBEIRO - LOCACIONES";
 const APP_URL = Deno.env.get("NOTIF_APP_URL") || "https://obras.ribeiro.ar";
 
 const GOLD = "#e7b13a";
@@ -46,7 +46,7 @@ function buildHtml({ nombre, proyecto, fecha, etapa, npt_horas, npt_motivo, es_p
     <div style="max-width:520px;margin:0 auto;background:#ffffff;border-radius:14px;overflow:hidden;border:1px solid #e8e6de;">
       <div style="background:${DARK};padding:22px 26px;display:flex;align-items:baseline;gap:10px;">
         <span style="font-size:17px;font-weight:800;color:${GOLD};letter-spacing:.02em;">RIBEIRO</span>
-        <span style="font-size:13px;font-weight:600;color:#cfcfd8;">PARTES DIARIOS</span>
+        <span style="font-size:13px;font-weight:600;color:#cfcfd8;">LOCACIONES</span>
         <span style="font-size:11px;color:#8a8a97;margin-left:auto;">${tag}</span>
       </div>
       <div style="padding:28px 26px 8px;">
@@ -58,13 +58,13 @@ function buildHtml({ nombre, proyecto, fecha, etapa, npt_horas, npt_motivo, es_p
         <div style="margin:26px 0 8px;">
           <a href="${APP_URL}/proyectos/${encodeURIComponent(proyecto)}"
              style="display:inline-block;background:${GOLD};color:${DARK};font-weight:700;font-size:13.5px;text-decoration:none;padding:12px 22px;border-radius:8px;">
-            Ver en Partes Diarios →
+            Ver en Locaciones →
           </a>
         </div>
       </div>
       <div style="padding:16px 26px 22px;border-top:1px solid #eeece4;">
         <p style="margin:0;font-size:11.5px;color:#9a9a9a;line-height:1.5;">
-          Este email fue generado automáticamente por PARTES DIARIOS - RIBEIRO.<br/>
+          Este email fue generado automáticamente por RIBEIRO - LOCACIONES.<br/>
           Si creés que fue un error, contactá al área correspondiente.
         </p>
       </div>
