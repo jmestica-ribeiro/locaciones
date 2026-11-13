@@ -3,10 +3,13 @@ import { Icon } from '../components.jsx';
 import { GESTION_INDUSTRIAL } from '../gestionIndustrial.js';
 import { NotFoundView } from './NotFoundView.jsx';
 import { ObirasView } from './ObirasView.jsx';
+import { CronogramaToyotaWellView } from './CronogramaToyotaWellView.jsx';
 
 // Vistas ya desarrolladas, por "grupo/seccion". El resto muestra "en construcción".
 const VISTAS = {
-  "tps/obiras": ObirasView,
+  "tps/obiras": { Vista: ObirasView },
+  "toyota-well/locaciones": { Vista: CronogramaToyotaWellView, props: { sector: "Locaciones" } },
+  "toyota-well/obras-publicas": { Vista: CronogramaToyotaWellView, props: { sector: "Obras Públicas" } },
 };
 
 export function GestionIndustrialView() {
@@ -15,8 +18,10 @@ export function GestionIndustrialView() {
   const s = g?.items.find((x) => x.id === seccion);
   if (!g || !s) return <NotFoundView />;
 
-  const Vista = VISTAS[`${g.id}/${s.id}`];
-  if (Vista) return <Vista />;
+  const clave = `${g.id}/${s.id}`;
+  const entrada = VISTAS[clave];
+  // key: al pasar de una sección a otra con la misma vista, se arranca de cero.
+  if (entrada) return <entrada.Vista key={clave} {...entrada.props} />;
 
   return (
     <div className="empty" style={{ paddingTop: 80 }}>

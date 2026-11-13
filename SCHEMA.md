@@ -355,3 +355,42 @@ Crea (sin `id`) o actualiza la obira y reemplaza sus repeticiones y acciones en 
 ### Permisos (RLS)
 - Usuarios autenticados: ven, crean y editan obiras, repeticiones, acciones y archivos.
 - Solo admins: eliminar obiras y administrar `ObirasUbicaciones` (todos pueden leerlas).
+
+## Gestión industrial › Toyota Well › Cronograma (Locaciones / Obras Públicas)
+
+> Migración: `supabase/migrations/20261113163214_toyota_well_cronograma.sql`. Vista: `src/views/CronogramaToyotaWellView.jsx`; cálculos (días hábiles, proyección, desvíos, curvas): `src/toyotaWell.js`.
+
+El cronograma se importó una vez desde MS Project (XML). Desde entonces el avance se carga en la app.
+
+```
+ToyotaWellTareas (id)
+  ├── parent_id → ToyotaWellTareas (jerarquía; las que tienen hijas son resúmenes)
+  ├── predecesoras bigint[] → ToyotaWellTareas.id (vínculo fin-comienzo)
+  └── ToyotaWellAvances (tarea_id)   historial de avances y justificaciones
+```
+
+### `ToyotaWellTareas`
+| Columna | Tipo | Notas |
+|---|---|---|
+| `id` | bigint identity | PK |
+| `sector` | text | `Locaciones` / `Obras Públicas` |
+| `parent_id` | bigint | Tarea resumen padre (cascade) |
+| `orden` | integer | "Id" visible, único por sector (como en Project) |
+| `nombre` | text | |
+| `inicio`, `fin` | date | **Línea base** (plan ideal). Solo admins la modifican (trigger) |
+| `avance` | smallint | 0–100. En resúmenes no se usa: se calcula ponderado por duración |
+| `inicio_real`, `fin_real` | date | Ejecución |
+| `predecesoras` | bigint[] | Ids de tareas que deben terminar antes |
+| `notas` | text | |
+| `updated_at`, `updated_by` | | Los completa el trigger |
+
+### `ToyotaWellAvances`
+Un registro por cada actualización: `fecha` (día al que corresponde el avance), `avance`, `inicio_real`, `fin_real`, `justificacion`, `origen` (`app` / `importacion`), `created_at`, `created_by` → `profiles`. No se edita ni se borra.
+
+### Función `registrar_avance_toyota_well(p_tarea_id, p_avance, p_inicio_real, p_fin_real, p_fecha, p_justificacion)`
+Actualiza la tarea y agrega el registro al historial en una transacción (`security invoker`). Valida coherencia (avance > 0 exige comienzo real, 100 % exige fin real, sin fechas futuras, no aplica a resúmenes) y **exige justificación** cuando la tarea está atrasada respecto de la línea base: `coalesce(inicio_real, fecha) > inicio` o `coalesce(fin_real, fecha) > fin`.
+
+### Permisos (RLS)
+- Usuarios autenticados: ven el cronograma, registran avance (vía la función) y editan notas.
+- Solo admins: crear/borrar tareas y cambiar la línea base, nombre, estructura o predecesoras (lo bloquea el trigger `toyota_well_tareas_before_update`).
+- El historial solo admite inserts propios (`created_by = auth.uid()`, `origen = 'app'`).

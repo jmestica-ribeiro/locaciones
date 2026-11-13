@@ -542,3 +542,43 @@ export async function getResponsablesSugeridos() {
   });
   return [...nombres];
 }
+
+/* ============================================================
+   Gestión industrial › Toyota Well › cronograma (Locaciones / Obras Públicas)
+   ============================================================ */
+// Ver supabase/migrations/20261113163214_toyota_well_cronograma.sql.
+
+/** Tareas del cronograma de un sector, con su historial de avances. */
+export async function getCronogramaToyotaWell(sector) {
+  const { data, error } = await supabase
+    .from("ToyotaWellTareas")
+    .select("*, avances:ToyotaWellAvances(id, fecha, avance, inicio_real, fin_real, justificacion, origen, created_at, autor:profiles(nombre))")
+    .eq("sector", sector)
+    .order("orden", { ascending: true });
+  if (error) throw error;
+  return data;
+}
+
+/**
+ * Registra el avance de una tarea (y lo deja en el historial). La base exige
+ * justificación si la tarea está atrasada respecto de la línea base.
+ */
+export async function registrarAvanceToyotaWell(tareaId, { avance, inicio_real, fin_real, fecha, justificacion }) {
+  const { data, error } = await supabase.rpc("registrar_avance_toyota_well", {
+    p_tarea_id: tareaId,
+    p_avance: avance,
+    p_inicio_real: inicio_real || null,
+    p_fin_real: fin_real || null,
+    p_fecha: fecha || null,
+    p_justificacion: justificacion || null,
+  });
+  if (error) throw error;
+  return data;
+}
+
+/** Notas (cualquier usuario) o línea base: inicio/fin/nombre (solo admins, lo controla la base). */
+export async function updateTareaToyotaWell(id, patch) {
+  const { data, error } = await supabase.from("ToyotaWellTareas").update(patch).eq("id", id).select("id");
+  if (error) throw error;
+  if (!data?.length) throw new Error("No se pudo actualizar la tarea");
+}

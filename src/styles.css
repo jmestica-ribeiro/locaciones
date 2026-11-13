@@ -2477,3 +2477,122 @@ body {
   .obi-span-2 { grid-column: 1 / -1; }
   .obi-toolbar .rec-search { max-width: none; min-width: 0; width: 100%; }
 }
+
+/* ============================================================
+   Toyota Well › cronograma (Locaciones / Obras Públicas)
+   ============================================================ */
+.tw-kpis .kpi-lbl { line-height: 1.4; }
+.tw-kpi-fecha { font-size: 26px !important; }
+.tw-kpi-desvio { font-weight: 700; }
+.tw-kpi-desvio.pos { color: #f07a6e; }
+.tw-kpi-desvio.neg { color: var(--green); }
+.tw-kpi-btn { text-align: left; border: none; font: inherit; cursor: pointer; width: 100%; transition: transform 0.14s, box-shadow 0.14s; }
+.tw-kpi-btn:hover { transform: translateY(-2px); }
+.tw-kpi-btn.on { box-shadow: var(--shadow-card), inset 0 0 0 2px var(--gold); }
+
+.tw-curva .card-head { flex-wrap: wrap; }
+.tw-ambito { width: auto; padding: 7px 10px; font-size: 12.5px; background: var(--surface-2); color: var(--ink); border-color: var(--line-strong); }
+.tw-legend { display: flex; flex-wrap: wrap; gap: 6px 18px; padding: 0 24px 4px; font-size: 12px; color: var(--ink-2); }
+.tw-legend span { display: inline-flex; align-items: center; gap: 7px; }
+.tw-sw { display: inline-block; width: 18px; height: 3px; border-radius: 2px; }
+.tw-sw-dash { height: 0; background: none !important; border-top: 3px dashed; }
+.tw-chart-empty { height: 100%; display: grid; place-items: center; font-size: 13px; color: var(--ink-3); }
+.rc-tip .d.tw-tip-dash { background: none; border-top: 2px dashed; height: 0; border-radius: 0; }
+.rc-tip .tw-tip-desvio { margin-top: 4px; padding-top: 4px; border-top: 1px solid var(--line-strong); }
+.rc-tip .tw-tip-desvio b.neg { color: #f07a6e; }
+
+.tw-table { font-size: 13px; }
+.tw-table th { padding: 10px 10px; }
+.tw-table td { padding: 7px 10px; }
+.tw-table tbody tr { cursor: pointer; }
+.tw-table tr.tw-resumen td { font-weight: 600; background: rgba(42,38,32,0.035); }
+.tw-table tr.tw-resumen.tw-nivel-1 td, .tw-table tr.tw-resumen.tw-nivel-2 td { background: rgba(42,38,32,0.07); }
+.tw-table tr.tw-resumen.tw-nivel-2 .tw-nombre-txt { text-transform: uppercase; letter-spacing: 0.01em; }
+.tw-c-id { width: 1%; text-align: right; color: var(--on-cream-2); }
+.tw-c-nombre { min-width: 240px; }
+.tw-nombre { display: inline-flex; align-items: center; gap: 4px; }
+.tw-caret { display: inline-grid; place-items: center; width: 18px; color: var(--on-cream-2); transition: transform 0.15s; }
+.tw-caret.cerrado { transform: rotate(-90deg); }
+.tw-caret-sp { display: inline-block; width: 18px; }
+.tw-nota { color: var(--gold-deep); display: inline-grid; margin-left: 4px; }
+.tw-est { color: var(--on-cream-2); font-style: italic; }
+.tw-est.tarde { color: var(--red); }
+.tw-muted { color: var(--on-cream-2); }
+
+.tw-prog { display: flex; align-items: center; gap: 8px; min-width: 104px; }
+.tw-prog-track { flex: 1; height: 7px; background: rgba(42,38,32,0.09); border-radius: 2px; overflow: hidden; }
+.tw-prog-fill { height: 100%; background: var(--gold-deep); border-radius: 2px; }
+.tw-prog-fill.done { background: var(--green-deep); }
+.tw-prog span { font-family: var(--font-display); font-size: 12.5px; min-width: 34px; text-align: right; }
+
+.tw-preds { display: flex; flex-wrap: wrap; gap: 4px; }
+.tw-pred {
+  display: inline-flex; align-items: center; gap: 2px; min-width: 26px; justify-content: center;
+  padding: 2px 6px; font: 600 11.5px var(--font-display); cursor: pointer;
+  border: 1px solid; border-radius: 3px; background: transparent;
+}
+.tw-pred.done { color: var(--green-deep); border-color: rgba(79,154,85,0.45); background: rgba(116,192,116,0.1); }
+.tw-pred.pend { color: var(--gold-deep); border-color: rgba(184,133,42,0.5); background: rgba(231,177,58,0.1); }
+.tw-pred:hover { filter: brightness(0.92); }
+
+.tw-estado { display: inline-flex; gap: 4px; align-items: center; }
+.tw-pill-blue { background: rgba(74,144,200,0.12); color: #2f6e9f; border-color: rgba(74,144,200,0.4); }
+.tw-sinjust { display: inline-flex; align-items: center; gap: 3px; }
+.tw-mini { font-size: 11.5px; font-weight: 600; margin-right: 6px; }
+.tw-mini.rojo { color: var(--red); }
+.tw-mini.verde { color: var(--green-deep); }
+.tw-desvio { font-family: var(--font-display); font-weight: 600; color: var(--on-cream-2); }
+.tw-desvio.pos { color: var(--red); }
+.tw-desvio.neg { color: var(--green-deep); }
+
+/* Drawer de tarea */
+.drawer.tw-drawer { width: min(820px, 96vw); }
+.tw-resumen-tarea { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.tw-rt-datos { display: flex; flex-wrap: wrap; gap: 6px 18px; width: 100%; margin-top: 6px; font-size: 12.5px; color: var(--on-cream-2); }
+.tw-rt-datos b { color: var(--on-cream); font-weight: 600; }
+.tw-falta { display: flex; align-items: flex-start; gap: 8px; margin-top: 12px; padding: 10px 14px; font-size: 13px; line-height: 1.45; border: 1px solid; }
+.tw-falta svg { flex-shrink: 0; margin-top: 1px; }
+.tw-falta.ok { color: var(--green-deep); background: rgba(116,192,116,0.1); border-color: rgba(79,154,85,0.3); }
+.tw-falta.espera { color: var(--on-cream); background: rgba(42,38,32,0.04); border-color: var(--line-cream); }
+.tw-falta.bloq { color: var(--red); background: rgba(226,73,59,0.08); border-color: rgba(226,73,59,0.3); }
+.tw-deps { display: flex; flex-direction: column; gap: 6px; margin-top: 8px; }
+.tw-dep {
+  display: flex; align-items: center; gap: 12px; width: 100%; text-align: left; cursor: pointer;
+  padding: 9px 12px; background: #fff; border: 1px solid var(--line-cream); font: inherit; color: var(--on-cream);
+}
+.tw-dep:hover { border-color: var(--gold); }
+.tw-dep-id { font-size: 13px; color: var(--on-cream-2); min-width: 24px; text-align: right; }
+.tw-dep-txt { display: flex; flex-direction: column; min-width: 0; flex: 1; }
+.tw-dep-txt b { font-size: 13px; }
+.tw-dep-txt small, .tw-dep-right small { font-size: 11.5px; color: var(--on-cream-2); }
+.tw-dep-right { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; flex-shrink: 0; }
+.tw-dep-right .pill { font-size: 11px; }
+.tw-dep-nota { font-style: italic; }
+.tw-indirectas { margin-top: 10px; font-size: 12.5px; color: var(--on-cream-2); }
+.tw-indirectas summary { cursor: pointer; font-weight: 600; }
+.tw-hechas { display: flex; flex-wrap: wrap; align-items: center; gap: 5px; margin-top: 10px; font-size: 12.5px; color: var(--on-cream-2); }
+
+.tw-avance { display: flex; align-items: center; flex-wrap: wrap; gap: 14px; margin: 14px 0 16px; }
+.tw-avance-num { display: flex; align-items: center; gap: 6px; font-family: var(--font-display); font-size: 18px; }
+.tw-avance-num .input { width: 84px; font-size: 18px; font-family: var(--font-display); text-align: right; padding: 8px 10px; }
+.tw-range { flex: 1; min-width: 160px; accent-color: var(--gold-deep); }
+.tw-rapidos { display: flex; gap: 4px; }
+.tw-rapido { padding: 5px 9px; font: 600 12px var(--font-display); border: 1px solid var(--line-cream); background: #fff; cursor: pointer; color: var(--on-cream); }
+.tw-rapido.on { background: var(--surface); color: var(--gold-2); border-color: var(--surface); }
+.tw-grid3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.tw-just { margin-top: 16px; padding: 14px; background: rgba(231,177,58,0.08); border: 1px solid rgba(231,177,58,0.4); }
+.tw-just.req { background: rgba(226,73,59,0.06); border-color: rgba(226,73,59,0.35); }
+.tw-just-msg { display: flex; gap: 8px; align-items: flex-start; font-size: 13px; line-height: 1.45; margin-bottom: 12px; color: var(--on-cream); }
+.tw-just-msg svg { flex-shrink: 0; margin-top: 2px; color: var(--gold-deep); }
+.tw-just.req .tw-just-msg svg { color: var(--red); }
+.tw-just-ult { margin-top: 10px; font-size: 12px; color: var(--on-cream-2); }
+.tw-dur { padding: 10px 0; font-size: 13.5px; }
+.tw-plan-ro { display: flex; flex-wrap: wrap; gap: 6px 22px; margin-top: 12px; font-size: 13px; color: var(--on-cream-2); }
+.tw-plan-ro b { color: var(--on-cream); }
+.tw-plan-ro small { width: 100%; font-size: 11.5px; font-style: italic; }
+
+@media (max-width: 640px) {
+  .tw-grid3 { grid-template-columns: minmax(0, 1fr); }
+  .tw-dep { flex-wrap: wrap; }
+  .tw-dep-right { align-items: flex-start; width: 100%; }
+}
