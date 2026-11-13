@@ -431,3 +431,114 @@ export async function deleteVehiculo(id) {
   const { error } = await supabase.from("ListadoVehiculos").delete().eq("id", id);
   if (error) throw error;
 }
+
+// ── Obiras (Gestión industrial › TPS) ──────────────────────────────────────
+// Ver supabase/migrations/20261113134146_obiras.sql. El bucket es privado: se
+// guarda el path y se generan signed URLs al descargar.
+const OBIRAS_BUCKET = "obiras-archivos";
+
+/** Todas las obiras con sus repeticiones y acciones embebidas. */
+export async function getObiras() {
+  const { data, error } = await supabase
+    .from("Obiras")
+    .select("*, repeticiones:ObirasRepeticiones(*), acciones:ObirasAcciones(*)")
+    .order("id", { ascending: true });
+  if (error) throw error;
+  return data;
+}
+
+/** Crea (obira.id vacío) o actualiza una obira con sus listas, en una sola transacción. Devuelve el id. */
+export async function guardarObira(obira, repeticiones, acciones) {
+  const { data, error } = await supabase.rpc("guardar_obira", {
+    p_obira: obira,
+    p_repeticiones: repeticiones,
+    p_acciones: acciones,
+  });
+  if (error) throw error;
+  return data;
+}
+
+/** Solo admins (lo exige RLS). Borra la obira, sus listas (cascade) y sus archivos. */
+export async function deleteObira(id) {
+  const { data: archivos } = await supabase.from("ObirasArchivos").select("path").eq("obira_id", id);
+  const { data, error } = await supabase.from("Obiras").delete().eq("id", id).select("id");
+  if (error) throw error;
+  if (!data?.length) throw new Error("No tenés permiso para eliminar obiras");
+  if (archivos?.length) await supabase.storage.from(OBIRAS_BUCKET).remove(archivos.map((a) => a.path));
+}
+
+export async function getArchivosObira(obiraId) {
+  const { data, error } = await supabase
+    .from("ObirasArchivos")
+    .select("*")
+    .eq("obira_id", obiraId)
+    .order("created_at");
+  if (error) throw error;
+  return data;
+}
+
+export async function uploadArchivoObira(obiraId, file) {
+  // Storage no acepta cualquier caracter en la key: se normaliza el nombre
+  // para la ruta y se guarda el original para mostrar/descargar.
+  const safe = file.name.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^\w.-]+/g, "_");
+  const path = `${obiraId}/${Date.now()}-${safe}`;
+  const { error: upErr } = await supabase.storage.from(OBIRAS_BUCKET).upload(path, file);
+  if (upErr) throw upErr;
+  const { data, error } = await supabase
+    .from("ObirasArchivos")
+    .insert({ obira_id: obiraId, path, nombre: file.name, tamano: file.size })
+    .select()
+    .single();
+  if (error) {
+    await supabase.storage.from(OBIRAS_BUCKET).remove([path]);
+    throw error;
+  }
+  return data;
+}
+
+export async function deleteArchivoObira(archivo) {
+  const { error } = await supabase.from("ObirasArchivos").delete().eq("id", archivo.id);
+  if (error) throw error;
+  await supabase.storage.from(OBIRAS_BUCKET).remove([archivo.path]);
+}
+
+/** URL firmada de corta duración que fuerza la descarga con el nombre original. */
+export async function getArchivoObiraUrl(archivo) {
+  const { data, error } = await supabase.storage
+    .from(OBIRAS_BUCKET)
+    .createSignedUrl(archivo.path, 60, { download: archivo.nombre });
+  if (error) throw error;
+  return data.signedUrl;
+}
+
+export async function getUbicacionesObiras() {
+  const { data, error } = await supabase.from("ObirasUbicaciones").select("*").order("nombre");
+  if (error) throw error;
+  return data;
+}
+
+export async function addUbicacionObira(nombre) {
+  const { data, error } = await supabase.from("ObirasUbicaciones").insert({ nombre }).select().single();
+  if (error) throw error;
+  return data;
+}
+
+export async function deleteUbicacionObira(id) {
+  const { error } = await supabase.from("ObirasUbicaciones").delete().eq("id", id);
+  if (error) throw error;
+}
+
+/** Nombres para sugerir como responsable: usuarios de la app + listado de personal. */
+export async function getResponsablesSugeridos() {
+  const [perfiles, personal] = await Promise.all([
+    supabase.from("profiles").select("nombre"),
+    supabase.from("ListadoPersonal").select("nombre, apellido"),
+  ]);
+  const nombres = new Set();
+  perfiles.data?.forEach((p) => p.nombre?.trim() && nombres.add(p.nombre.trim()));
+  personal.data?.forEach((p) => {
+    const n = [p.nombre, p.apellido].filter(Boolean).join(" ").trim();
+    if (n) nombres.add(n);
+  });
+  return [...nombres];
+}

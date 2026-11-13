@@ -2,14 +2,21 @@ import { useParams } from 'react-router-dom';
 import { Icon } from '../components.jsx';
 import { GESTION_INDUSTRIAL } from '../gestionIndustrial.js';
 import { NotFoundView } from './NotFoundView.jsx';
+import { ObirasView } from './ObirasView.jsx';
 
-/* Placeholder de las secciones de Gestión industrial (TPS / Toyota Well).
-   Reemplazar por la vista real de cada sección cuando esté definida. */
+// Vistas ya desarrolladas, por "grupo/seccion". El resto muestra "en construcción".
+const VISTAS = {
+  "tps/obiras": ObirasView,
+};
+
 export function GestionIndustrialView() {
   const { grupo, seccion } = useParams();
   const g = GESTION_INDUSTRIAL.find((x) => x.id === grupo);
   const s = g?.items.find((x) => x.id === seccion);
   if (!g || !s) return <NotFoundView />;
+
+  const Vista = VISTAS[`${g.id}/${s.id}`];
+  if (Vista) return <Vista />;
 
   return (
     <div className="empty" style={{ paddingTop: 80 }}>

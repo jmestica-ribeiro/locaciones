@@ -3,7 +3,90 @@ import { Icon } from '../components.jsx';
 import {
   getUsuariosNotificables, getNotificacionesConfig,
   addNotificacionConfig, removeNotificacionConfig,
+  getUbicacionesObiras, addUbicacionObira, deleteUbicacionObira,
 } from '../supabase.js';
+
+/* Ubicaciones que se sugieren al cargar una obira (Gestión industrial › TPS › Obiras). */
+function UbicacionesObirasCard() {
+  const [lista, setLista] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [nombre, setNombre] = useState("");
+  const [saving, setSaving] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    getUbicacionesObiras()
+      .then((d) => setLista(d || []))
+      .catch((e) => setError(e.message || "No se pudieron cargar las ubicaciones"))
+      .finally(() => setLoading(false));
+  }, []);
+
+  const agregar = async (e) => {
+    e.preventDefault();
+    const n = nombre.trim();
+    if (!n) return;
+    if (lista.some((u) => u.nombre.toLowerCase() === n.toLowerCase())) { setError(`"${n}" ya está en la lista`); return; }
+    setSaving(true);
+    setError(null);
+    try {
+      const nueva = await addUbicacionObira(n);
+      setLista((prev) => [...prev, nueva].sort((a, b) => a.nombre.localeCompare(b.nombre, "es")));
+      setNombre("");
+    } catch (err) {
+      setError(err.message || "No se pudo agregar la ubicación");
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const quitar = async (u) => {
+    setError(null);
+    setLista((prev) => prev.filter((x) => x.id !== u.id));
+    try { await deleteUbicacionObira(u.id); }
+    catch (err) {
+      setError(err.message || "No se pudo quitar la ubicación");
+      setLista((prev) => [...prev, u].sort((a, b) => a.nombre.localeCompare(b.nombre, "es")));
+    }
+  };
+
+  return (
+    <section className="card" style={{ marginTop: 20 }}>
+      <div className="card-head">
+        <div className="ch-icon"><Icon name="pin" size={20} /></div>
+        <div>
+          <h2>Ubicaciones de obiras</h2>
+          <div className="ch-sub">Se sugieren al completar la ubicación de una obira; igual se puede escribir otra</div>
+        </div>
+      </div>
+      <div style={{ padding: "0 24px 22px" }}>
+        <form onSubmit={agregar} style={{ display: "flex", gap: 10, maxWidth: 420, marginBottom: 14 }}>
+          <input className="input" placeholder="Ej: LAJE48" value={nombre} onChange={(e) => setNombre(e.target.value)} style={{ padding: "8px 12px" }} />
+          <button className="btn btn-gold btn-sm" type="submit" disabled={saving || !nombre.trim()}>
+            <Icon name="plus" size={14} /> Agregar
+          </button>
+        </form>
+        {error && <div style={{ color: "var(--red)", fontSize: 12.5, marginBottom: 10 }}>{error}</div>}
+        {loading ? (
+          <div style={{ fontSize: 13, color: "var(--ink-3)" }}>Cargando…</div>
+        ) : lista.length === 0 ? (
+          <div style={{ fontSize: 13, color: "var(--ink-3)" }}>Todavía no hay ubicaciones cargadas.</div>
+        ) : (
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+            {lista.map((u) => (
+              <span key={u.id} className="pill pill-dim" style={{ fontSize: 12, padding: "4px 6px 4px 10px" }}>
+                {u.nombre}
+                <button onClick={() => quitar(u)} title={`Quitar ${u.nombre}`} aria-label={`Quitar ${u.nombre}`}
+                  style={{ background: "none", border: "none", color: "inherit", cursor: "pointer", padding: 2, display: "grid", placeItems: "center" }}>
+                  <Icon name="x" size={12} />
+                </button>
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
 
 const TIPOS = [
   { id: 'parte_cargado', label: 'Parte cargado', hint: 'Se avisa cuando se carga un parte diario nuevo' },
@@ -57,8 +140,8 @@ export function AdminConfigView() {
     <div className="fade-in">
       <div className="home-head" style={{ marginBottom: 20 }}>
         <div>
-          <h2 className="home-h2">Configuración · Notificaciones</h2>
-          <p className="home-sub">Elegí qué usuarios reciben cada tipo de aviso (in-app y por correo)</p>
+          <h2 className="home-h2">Configuración</h2>
+          <p className="home-sub">Notificaciones de la app y listados de Gestión industrial</p>
         </div>
       </div>
 
@@ -133,6 +216,8 @@ export function AdminConfigView() {
           </div>
         )}
       </section>
+
+      <UbicacionesObirasCard />
     </div>
   );
 }

@@ -2343,3 +2343,137 @@ body {
   .icon-btn { width: 44px; height: 44px; }
   .nav-sub-item { padding-top: 11px; padding-bottom: 11px; }
 }
+
+/* ============================================================
+   Obiras (Gestión industrial › TPS)
+   ============================================================ */
+.obi-toolbar {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  padding: 14px 18px; border-bottom: 1px solid var(--line-cream);
+}
+.obi-toolbar .rec-search { min-width: 220px; max-width: 340px; }
+.obi-tools { display: flex; gap: 8px; flex-wrap: wrap; margin-left: auto; align-items: center; }
+.obi-btn-on { border-color: var(--gold) !important; background: rgba(231,177,58,0.12) !important; }
+.obi-badge {
+  background: var(--gold); color: #241f15; font-family: var(--font-mono);
+  font-size: 10px; line-height: 16px; padding: 0 6px; margin-left: 2px;
+}
+.obi-select-sm { width: auto; padding: 7px 10px; font-size: 12.5px; }
+
+.obi-filters {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 12px 14px; align-items: end;
+  padding: 14px 18px; border-bottom: 1px solid var(--line-cream);
+  background: rgba(42,38,32,0.025);
+}
+.obi-filters label {
+  display: block; margin-bottom: 5px;
+  font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--on-cream-2);
+}
+.obi-filters .input, .obi-filters .select { padding: 8px 10px; font-size: 13px; }
+
+.obi-selbar {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  padding: 8px 18px; font-size: 12.5px; color: var(--on-cream);
+  background: rgba(231,177,58,0.1); border-bottom: 1px solid var(--line-cream);
+}
+.obi-selbar svg { color: var(--gold-deep); }
+.obi-linkbtn {
+  background: none; border: none; padding: 0; cursor: pointer;
+  font: inherit; font-weight: 600; color: var(--gold-deep); text-decoration: underline;
+}
+.obi-iconlink {
+  background: none; border: none; padding: 4px; cursor: pointer;
+  color: var(--on-cream-2); display: inline-grid; place-items: center;
+}
+.obi-iconlink:hover { color: var(--on-cream); }
+.obi-iconlink.danger:hover { color: var(--red); }
+.obi-iconlink:disabled { opacity: 0.5; cursor: wait; }
+
+.obi-table th, .obi-table td { padding: 11px 14px; }
+.obi-table tbody tr { cursor: pointer; }
+.obi-table tbody tr.sel td { background: rgba(231,177,58,0.09); }
+.obi-check { width: 1%; padding-right: 0 !important; }
+.obi-check input { width: 17px; height: 17px; cursor: pointer; accent-color: var(--gold-deep); vertical-align: middle; }
+.obi-open {
+  width: 26px; height: 26px; display: grid; place-items: center;
+  background: var(--surface); color: var(--gold-2); border: none; cursor: pointer;
+  transition: transform 0.14s;
+}
+.obi-open:hover { transform: translateX(2px); }
+.obi-th-sort {
+  background: none; border: none; padding: 0; cursor: pointer;
+  font: inherit; color: inherit; text-transform: inherit; letter-spacing: inherit;
+  display: inline-flex; align-items: center; gap: 4px; white-space: nowrap;
+}
+.obi-th-sort:hover, .obi-th-sort.on { color: var(--on-cream); }
+.obi-cell-clip { max-width: 380px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.obi-nowrap { white-space: nowrap; }
+.obi-wrap { white-space: pre-wrap; min-width: 220px; }
+.obi-wrap-sm { white-space: normal; min-width: 160px; }
+.obi-table-acciones th { white-space: normal; }
+.obi-table-acciones td { vertical-align: top; }
+.obi-table-acciones td .pill { white-space: normal; line-height: 1.35; }
+.obi-muted { font-size: 12px; color: var(--on-cream-2); }
+
+/* Drawer de obira */
+.drawer.obi-drawer { width: min(1080px, 96vw); }
+.obi-head-sub { max-width: 640px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.obi-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
+.obi-span-2 { grid-column: span 2; }
+.obi-span-3 { grid-column: span 3; }
+.obi-span-4 { grid-column: 1 / -1; }
+.textarea.bad { border-color: var(--red); box-shadow: 0 0 0 3px rgba(226,73,59,0.14); }
+.obi-alert {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 18px; padding: 10px 14px;
+  font-size: 13px; color: var(--red);
+  background: rgba(226,73,59,0.1); border: 1px solid rgba(226,73,59,0.3);
+}
+
+.obi-sec { margin-top: 30px; }
+.obi-sec-band {
+  display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+  padding: 12px 16px; background: rgba(42,38,32,0.06); border-left: 3px solid var(--gold);
+}
+.obi-sec-band h3 {
+  margin: 0; font-family: var(--font-display); font-size: 15px;
+  text-transform: uppercase; letter-spacing: 0.02em; color: var(--on-cream);
+}
+.obi-sec-band p { margin: 2px 0 0; font-size: 12px; color: var(--on-cream-2); }
+.obi-sec-right { margin-left: auto; display: flex; align-items: center; gap: 14px; font-size: 12.5px; color: var(--on-cream-2); }
+.obi-sec-right b { color: var(--on-cream); font-family: var(--font-display); font-size: 14px; }
+.obi-note { display: flex; align-items: center; gap: 6px; margin: 10px 2px 0; font-size: 11.5px; font-style: italic; color: var(--on-cream-2); }
+
+.obi-subform { margin-top: 12px; padding: 16px; background: #fff; border: 1.5px solid rgba(231,177,58,0.55); }
+.obi-subform .obi-grid { align-items: end; }
+.obi-subform-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 14px; }
+.obi-subtable-wrap { margin-top: 10px; overflow-x: auto; background: #fff; border: 1px solid var(--line-cream); }
+.obi-subtable td { padding: 10px 14px; font-size: 13px; vertical-align: top; }
+.obi-subtable th { padding: 9px 14px; }
+.obi-subtable .rec-actions .icon-btn { display: inline-grid; width: 32px; height: 32px; vertical-align: middle; }
+.obi-subtable .rec-actions { vertical-align: middle; padding-top: 4px !important; padding-bottom: 4px !important; }
+.obi-subtable tr.obi-editing td { background: rgba(231,177,58,0.08); }
+.obi-subempty {
+  margin-top: 10px; padding: 16px; text-align: center; font-size: 12.5px;
+  color: var(--on-cream-2); background: rgba(255,255,255,0.6); border: 1px dashed var(--line-cream);
+}
+.obi-files { margin-top: 14px; display: flex; flex-direction: column; align-items: flex-start; gap: 8px; }
+.obi-files .obi-subtable-wrap { width: 100%; }
+
+.obi-foot { flex-wrap: wrap; align-items: center; }
+.obi-foot-right { margin-left: auto; display: flex; gap: 12px; }
+.obi-foot-err { display: inline-flex; align-items: center; gap: 6px; font-size: 12.5px; color: var(--red); }
+.obi-btn-danger { background: transparent; color: var(--red); border: 1px solid rgba(226,73,59,0.45); }
+.obi-btn-danger:hover { background: rgba(226,73,59,0.08); }
+
+@media (max-width: 900px) {
+  .obi-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .obi-span-3 { grid-column: 1 / -1; }
+  .obi-tools { margin-left: 0; }
+}
+@media (max-width: 560px) {
+  .obi-grid { grid-template-columns: minmax(0, 1fr); }
+  .obi-span-2 { grid-column: 1 / -1; }
+  .obi-toolbar .rec-search { max-width: none; min-width: 0; width: 100%; }
+}
