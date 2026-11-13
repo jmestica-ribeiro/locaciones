@@ -246,6 +246,21 @@ body {
   padding: 0 5px; min-width: 16px; text-align: center;
 }
 
+/* Grupos desplegables (Gestión industrial) */
+.nav-group { display: flex; flex-direction: column; gap: 3px; }
+.nav-group-head.group-active { color: var(--gold-2); }
+.nav-caret { margin-left: auto; display: grid; place-items: center; color: var(--ink-3); transition: transform 0.2s; }
+.nav-caret.open { transform: rotate(180deg); }
+.nav-item .nav-caret svg { width: 15px; height: 15px; }
+.sidebar.compact .nav-caret { display: none; }
+.nav-sub { position: relative; display: flex; flex-direction: column; gap: 2px; }
+.nav-sub::before {
+  content: ""; position: absolute;
+  left: 22px; top: 4px; bottom: 4px; width: 1px;
+  background: var(--line-strong);
+}
+.nav-sub-item { padding: 8px 12px 8px 46px; font-size: 13.5px; }
+
 .sidebar-foot { margin-top: auto; padding-top: 14px; }
 .conn {
   display: flex; align-items: center; gap: 11px;
@@ -2326,4 +2341,5 @@ body {
   .rec-chip { padding: 9px 13px; }
   .btn-sm { padding: 9px 14px; }
   .icon-btn { width: 44px; height: 44px; }
+  .nav-sub-item { padding-top: 11px; padding-bottom: 11px; }
 }

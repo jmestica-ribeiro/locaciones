@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Routes, Route, Navigate, useMatch, useNavigate } from 'react-router-dom';
 import { Sidebar, Topbar, Toast, SyncPrompt } from './components.jsx';
+import { GESTION_INDUSTRIAL } from './gestionIndustrial.js';
 import { useTweaks, TweaksPanel, TweakSection, TweakRadio, TweakColor } from './tweaks-panel.jsx';
 import { ProjectsProvider, useProjects } from './context/ProjectsContext.jsx';
 import { AuthProvider, useAuth } from './context/AuthContext.jsx';
@@ -17,6 +18,7 @@ import { HistorialView } from './views/HistorialView.jsx';
 import { NovedadesView } from './views/NovedadesView.jsx';
 import { AdminConfigView } from './views/AdminConfigView.jsx';
 import { NotFoundView } from './views/NotFoundView.jsx';
+import { GestionIndustrialView } from './views/GestionIndustrialView.jsx';
 
 const TWEAK_DEFAULTS = {
   accent: ["#e7b13a", "#f2c451", "#b8852a"],
@@ -67,11 +69,14 @@ function Layout() {
   const mConfig    = useMatch("/proyectos/:pid/config");
   const mHistorial = useMatch("/proyectos/:pid/historial");
   const mEtapa     = useMatch("/proyectos/:pid/etapas/:eid");
+  const mGestion   = useMatch("/gestion-industrial/:grupo/:seccion");
 
   const pid = (mProject || mTablero || mConfig || mHistorial || mEtapa)?.params?.pid;
   const eid = mEtapa?.params?.eid;
   const project = projects.find((p) => p.id === pid) || null;
   const etapa   = project?.etapas?.find((e) => e.id === eid) || null;
+  const giGrupo   = GESTION_INDUSTRIAL.find((g) => g.id === mGestion?.params?.grupo) || null;
+  const giSeccion = giGrupo?.items.find((s) => s.id === mGestion?.params?.seccion) || null;
 
   const projMeta = project ? [
     { icon: "pin",  label: "Ubicación", value: project.location },
@@ -83,6 +88,7 @@ function Layout() {
   if (mProyectos) { title = "Proyectos"; }
   else if (mNovedades) { title = "Novedades"; crumbs = [{ label: "Proyectos", to: "/proyectos" }, { label: "Novedades" }]; }
   else if (mRecursos) { title = "Recursos"; crumbs = [{ label: "Proyectos", to: "/proyectos" }, { label: "Recursos" }]; }
+  else if (giGrupo && giSeccion) { title = giSeccion.label; crumbs = [{ label: "Gestión industrial" }, { label: giGrupo.label }, { label: giSeccion.label }]; }
   else if (mAdminConfig) { title = "Configuración"; crumbs = [{ label: "Proyectos", to: "/proyectos" }, { label: "Configuración" }]; }
   else if (mProject && project) { title = project.code; crumbs = [{ label: "Proyectos", to: "/proyectos" }, { label: project.code }]; meta = projMeta; }
   else if (mTablero && project) { title = "Tablero de control"; crumbs = [{ label: "Proyectos", to: "/proyectos" }, { label: project.code, to: `/proyectos/${pid}` }, { label: "Tablero" }]; meta = projMeta; }
@@ -116,6 +122,7 @@ function Layout() {
             <Route path="/proyectos/:pid/historial" element={<HistorialView />} />
             <Route path="/proyectos/:pid/etapas/:eid" element={<EtapaDetail />} />
             <Route path="/recursos" element={<RecursosView />} />
+            <Route path="/gestion-industrial/:grupo/:seccion" element={<GestionIndustrialView />} />
             <Route path="*" element={<NotFoundView />} />
           </Routes>
         </div>

@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { GESTION_INDUSTRIAL, giPath, giGroupOf } from './gestionIndustrial.js';
 
 /* ============================================================
    Iconos (SVG inline, stroke) + primitivos compartidos
@@ -74,6 +75,17 @@ export function Sidebar({ compact, outbox, isOnline, lastSync, onToggle, isAdmin
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const active = (path) => pathname === path || (path === "/proyectos" && pathname.startsWith("/proyectos"));
+
+  // Grupos desplegados: lo que eligió el usuario manda; si no tocó el grupo,
+  // queda abierto el que contiene la ruta actual.
+  const activeGroup = giGroupOf(pathname);
+  const [groupChoice, setGroupChoice] = React.useState({});
+  const isGroupOpen = (id) => groupChoice[id] ?? id === activeGroup;
+  const toggleGroup = (id) => {
+    // En modo compacto no hay lugar para el submenú: se expande la barra y se abre el grupo.
+    if (compact) { onToggle?.(); setGroupChoice((c) => ({ ...c, [id]: true })); return; }
+    setGroupChoice((c) => ({ ...c, [id]: !isGroupOpen(id) }));
+  };
   return (
     <aside className={clsx("sidebar", compact && "compact")}>
       <button className="brand" onClick={() => navigate("/proyectos")} style={{ background: "none", border: "none", cursor: "pointer", textAlign: "left", color: "inherit", font: "inherit" }}>
@@ -93,6 +105,40 @@ export function Sidebar({ compact, outbox, isOnline, lastSync, onToggle, isAdmin
             {n.path === "/proyectos" && outbox > 0 && <span className="nav-badge alert">{outbox}</span>}
           </button>
         ))}
+      </nav>
+
+      <div className="nav-label">Gestión industrial</div>
+      <nav className="nav">
+        {GESTION_INDUSTRIAL.map((g) => {
+          const open = !compact && isGroupOpen(g.id);
+          const groupActive = activeGroup === g.id;
+          return (
+            <div key={g.id} className="nav-group">
+              <button
+                className={clsx("nav-item", "nav-group-head", groupActive && "group-active")}
+                onClick={() => toggleGroup(g.id)}
+                aria-expanded={open}
+                title={compact ? g.label : undefined}
+              >
+                <Icon name={g.icon} size={21} />
+                <span className="label">{g.label}</span>
+                <span className={clsx("nav-caret", open && "open")}><Icon name="chevDown" size={15} /></span>
+              </button>
+              {open && (
+                <div className="nav-sub">
+                  {g.items.map((s) => {
+                    const path = giPath(g.id, s.id);
+                    return (
+                      <button key={s.id} className={clsx("nav-item", "nav-sub-item", pathname === path && "active")} onClick={() => navigate(path)}>
+                        <span className="label">{s.label}</span>
+                      </button>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+          );
+        })}
       </nav>
 
       {isAdmin && (
